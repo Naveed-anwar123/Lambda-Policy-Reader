@@ -85,10 +85,7 @@ def lambda_handler(event, context):
             
             if len(added_action_list) != 0 or len(removed_action_list) != 0:
                 publish_message_to_sns(added_action_list,removed_action_list)
-                # Changes are deteced.. Update s3 bucket with most recent downloaded json policy from the url
-                # Un comment below line after testing...
-    #print(data)
-    #save_to_s3(data)
+                
     return {
         'statusCode': 200,
         'body': json.dumps('Hello from Lambda!')
@@ -111,12 +108,10 @@ def publish_message_to_sns(added,removed):
     message_body = "Hello, the following new actions have been added to AWS.\n\n."
     if len(added) > 0:
         for k in added:
-            #print('Service Name : {} \n Actions Added : {}'.format(k,added[k][0]))
             message_body += 'Service Name : {} \n Actions Added : {} \n\n'.format(k,added[k][0])
     
     if len(removed) > 0:
         for j in removed:
-            #print('Service Name:{} , Actions Removed:{}'.format(j,removed[j][0]))
             message_body += 'Service Name : {} \n Actions Removed : {} \n\n'.format(j,removed[j][0])
             
     print(message_body)
